@@ -8,7 +8,7 @@ import java.sql.*;
 
 public class HospitalDatabase {
 
-    private final static String DB_URL = "jdbc:postgresql://localhost:5432/Hospital";
+    private final static String DB_URL = "jdbc:postgresql://localhost:5432/hospital";
     private final static String DB_USER = "postgres";
     private final static String DB_PASS = "2143658709";
 
@@ -28,13 +28,22 @@ public class HospitalDatabase {
         return INSTANCE;
     }
 
-    private Connection getConnection() {
-        try {
-            return  DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+    private Connection getConnection()
+            throws SQLException
+    {
+        try{
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e){
+            System.err.println("боль");
+            throw new RuntimeException();
         }
-        return null;
+//        try {
+//            return  DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+//        } catch (SQLException sqlException) {
+//            sqlException.printStackTrace();
+//        }
+//        return null;
+        return  DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
     }
 
 //    public ResultSet executeSelect(String query) {
