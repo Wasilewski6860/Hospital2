@@ -78,6 +78,7 @@ public class PatientServlet extends HttpServlet {
         else if (pathInfo!=null &&req.getPathInfo().substring(1).startsWith("delete/")){
             Integer id = Integer.parseInt(req.getPathInfo().substring(8));
             deletePatientUseCase.execute(id);
+            resp.getWriter().print("{\"result\": \"Patient has been deleted\"}");
         }
         else {
             String json = ServletUtils.parseRequestBody(req);

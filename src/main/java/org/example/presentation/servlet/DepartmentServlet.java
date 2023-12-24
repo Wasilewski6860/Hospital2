@@ -46,8 +46,8 @@ public class DepartmentServlet extends HttpServlet {
             responseMessage = new Gson().toJson(departments);
         } else {
             try {
-                if (req.getPathInfo().substring(1).startsWith("all")){
-                    String idString = req.getPathInfo().substring(5);
+                if (pathInfo.endsWith("patients")){
+                    String idString = pathInfo.replace("patients","").replace("/","");
                     Integer id = Integer.parseInt(idString);
                     List<Patient> patients = getAllPatientsInDepartmentUseCase.execute(id);
 
@@ -93,14 +93,17 @@ public class DepartmentServlet extends HttpServlet {
             editDepartmentUseCase.execute(department.getDepartmentNumber(),department.getName());
 
             resp.setContentType("application/json");
-            resp.getWriter().print("{\"result\": \"Department has been edited\"}");
+            resp.sendRedirect("/api/department");
+//            resp.getWriter().print("{\"result\": \"Department has been edited\"}");
         }
         else if (pathInfo!=null &&req.getPathInfo().substring(1).startsWith("delete/")){
             Integer id = Integer.parseInt(req.getPathInfo().substring(8));
             deleteDepartmentUseCase.execute(id);
+            resp.sendRedirect("/api/department");
         }
         else if (pathInfo!=null &&req.getPathInfo().substring(1).startsWith("deleteAll")){
             deleteAllDepartmentsUseCase.execute();
+            resp.sendRedirect("/api/department");
         }
         else {
             String json = ServletUtils.parseRequestBody(req);
@@ -109,7 +112,8 @@ public class DepartmentServlet extends HttpServlet {
             addDepartmentUseCase.execute(department.getName(),department.getDepartmentNumber());
 
             resp.setContentType("application/json");
-            resp.getWriter().print("{\"result\": \"Department has been created\"}");
+            resp.sendRedirect("/api/department");
+//            resp.getWriter().print("{\"result\": \"Department has been created\"}");
         }
 
     }

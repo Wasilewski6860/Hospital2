@@ -26,8 +26,9 @@ public class PatientDaoImpl implements PatientDao {
         try{
             String name = "\'"+patientDto.getName()+"\'";
             String gender = "\'"+patientDto.getGender()+"\'";
-            String id = ""+patientDto.getDepartmentId()+"";
+            int id = patientDto.getDepartmentId();
             database.executeUpdate("INSERT INTO patient (name, gender, department_id) VALUES ( "+name+","+gender+","+id+" )");
+            System.out.println("INSERT INTO patient (name, gender, department_id) VALUES ( "+name+","+gender+","+id+" )");
             DepartmentDto departmentDto = DepartmentDaoImpl.getInstance().getDepartmentById(patientDto.getDepartmentId());
             departmentDto.setPatient_count(departmentDto.getPatient_count()+1);
             DepartmentDaoImpl.getInstance().editDepartment(departmentDto);
